@@ -12,7 +12,6 @@
     <title>仲境·高端园林养护</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
     <style>
         :root {
             --primary-color: #2e7d32;
@@ -41,6 +40,33 @@
             padding-bottom: 60px;
         }
 
+        /* 使用Unicode符号代替图标字体 */
+        .icon-camera::before { content: "📷"; }
+        .icon-task::before { content: "📋"; }
+        .icon-log::before { content: "📝"; }
+        .icon-tree::before { content: "🌳"; }
+        .icon-home::before { content: "🏠"; }
+        .icon-user::before { content: "👤"; }
+        .icon-settings::before { content: "⚙️"; }
+        .icon-bell::before { content: "🔔"; }
+        .icon-send::before { content: "📤"; }
+        .icon-close::before { content: "✖️"; }
+        .icon-robot::before { content: "🤖"; }
+        .icon-leaf::before { content: "🍃"; }
+        .icon-alert::before { content: "⚠️"; }
+        .icon-check::before { content: "✅"; }
+        .icon-water::before { content: "💧"; }
+        .icon-cut::before { content: "✂️"; }
+        .icon-spray::before { content: "🧪"; }
+        .icon-seed::before { content: "🌱"; }
+        .icon-sweep::before { content: "🍂"; }
+        .icon-history::before { content: "📜"; }
+        .icon-help::before { content: "❓"; }
+        .icon-edit::before { content: "✏️"; }
+        .icon-filter::before { content: "🔍"; }
+        .icon-location::before { content: "📍"; }
+        .icon-delete::before { content: "🗑️"; }
+
         .header {
             background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             color: white;
@@ -58,7 +84,7 @@
 
         .header h1 { font-size: 20px; font-weight: 600; }
         .header-icons { display: flex; gap: 16px; }
-        .header-icons i { font-size: 24px; cursor: pointer; }
+        .header-icons span { font-size: 22px; cursor: pointer; }
 
         .user-card {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
@@ -74,7 +100,7 @@
             width: 56px; height: 56px; border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
         }
         .user-details h2 { font-size: 18px; margin-bottom: 4px; }
         .user-details p { font-size: 14px; opacity: 0.9; }
@@ -110,7 +136,7 @@
             margin-bottom: 12px;
         }
         .section-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
-        .section-more { font-size: 14px; color: var(--text-hint); }
+        .section-more { font-size: 14px; color: var(--text-hint); cursor: pointer; }
 
         .quick-actions {
             display: grid;
@@ -157,7 +183,7 @@
         .task-icon {
             width: 44px; height: 44px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 20px; margin-right: 12px;
+            font-size: 22px; margin-right: 12px;
         }
 
         .task-content { flex: 1; }
@@ -205,8 +231,8 @@
         }
 
         .nav-item.active { color: var(--primary-color); }
-        .nav-item i { font-size: 24px; }
-        .nav-item span { font-size: 10px; }
+        .nav-item span.icon { font-size: 24px; }
+        .nav-item span.text { font-size: 10px; }
 
         .ai-assistant-btn {
             position: fixed; bottom: 80px; right: 20px;
@@ -217,13 +243,6 @@
             font-size: 28px;
             box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
             cursor: pointer; z-index: 999;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(46, 125, 50, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
         }
 
         .page { display: none; }
@@ -283,6 +302,7 @@
             border: none;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
+            font-size: 18px;
         }
 
         .quick-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
@@ -349,7 +369,7 @@
             cursor: pointer;
         }
 
-        .upload-area i { font-size: 48px; color: var(--text-hint); margin-bottom: 12px; }
+        .upload-area .icon { font-size: 48px; color: var(--text-hint); display: block; margin-bottom: 12px; }
         .upload-area p { color: var(--text-secondary); font-size: 14px; }
 
         .analysis-result {
@@ -390,7 +410,18 @@
             color: var(--text-secondary);
         }
 
-        .result-item i { color: var(--primary-color); margin-top: 2px; }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .chevron { color: var(--text-hint); font-size: 18px; }
     </style>
 </head>
 <body>
@@ -400,17 +431,17 @@
             <div class="header-content">
                 <h1>仲境·园林养护</h1>
                 <div class="header-icons">
-                    <i class="mdi mdi-bell-outline" onclick="showNotifications()"></i>
-                    <i class="mdi mdi-account-outline" onclick="switchPage('profile-page')"></i>
+                    <span class="icon-bell" onclick="alert('暂无新通知')">🔔</span>
+                    <span onclick="switchPage('profile-page')">👤</span>
                 </div>
             </div>
         </div>
 
         <div class="user-card">
             <div class="user-info">
-                <div class="user-avatar"><i class="mdi mdi-account"></i></div>
+                <div class="user-avatar">👤</div>
                 <div class="user-details">
-                    <h2 id="user-name">王工人</h2>
+                    <h2>王工人</h2>
                     <p>养护一部 · 养护工人</p>
                 </div>
             </div>
@@ -433,27 +464,19 @@
 
         <div class="quick-actions">
             <div class="action-item" onclick="switchPage('camera-page')">
-                <div class="action-icon" style="background: #e3f2fd;">
-                    <i class="mdi mdi-camera" style="color: #1565c0;"></i>
-                </div>
+                <div class="action-icon" style="background: #e3f2fd;">📷</div>
                 <span class="action-label">拍照识别</span>
             </div>
             <div class="action-item" onclick="switchPage('tasks-page')">
-                <div class="action-icon" style="background: #e8f5e9;">
-                    <i class="mdi mdi-clipboard-list-outline" style="color: #2e7d32;"></i>
-                </div>
+                <div class="action-icon" style="background: #e8f5e9;">📋</div>
                 <span class="action-label">任务列表</span>
             </div>
-            <div class="action-item" onclick="showUploadLog()">
-                <div class="action-icon" style="background: #fff3e0;">
-                    <i class="mdi mdi-file-document-edit-outline" style="color: #ef6c00;"></i>
-                </div>
+            <div class="action-item" onclick="alert('功能开发中')">
+                <div class="action-icon" style="background: #fff3e0;">📝</div>
                 <span class="action-label">工作日志</span>
             </div>
             <div class="action-item" onclick="switchPage('projects-page')">
-                <div class="action-icon" style="background: #fce4ec;">
-                    <i class="mdi mdi-tree" style="color: #c2185b;"></i>
-                </div>
+                <div class="action-icon" style="background: #fce4ec;">🌳</div>
                 <span class="action-label">项目查看</span>
             </div>
         </div>
@@ -466,7 +489,7 @@
             <div id="alerts-container">
                 <div class="alert-card">
                     <div class="alert-header">
-                        <i class="mdi mdi-alert-circle" style="color: var(--danger-color);"></i>
+                        <span>⚠️</span>
                         <span class="alert-title">月季黑斑病</span>
                     </div>
                     <div class="alert-content">
@@ -491,7 +514,7 @@
             <div class="header-content">
                 <h1>AI智能助手</h1>
                 <div class="header-icons">
-                    <i class="mdi mdi-delete-outline" onclick="clearChat()"></i>
+                    <span onclick="clearChat()">🗑️</span>
                 </div>
             </div>
         </div>
@@ -513,10 +536,8 @@
             
             <div class="chat-input-container">
                 <div class="chat-input-box">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="输入您的问题..." onkeypress="handleKeyPress(event)">
-                    <button class="send-btn" onclick="sendMessage()">
-                        <i class="mdi mdi-send"></i>
-                    </button>
+                    <input type="text" class="chat-input" id="chat-input" placeholder="输入您的问题..." onkeypress="if(event.key==='Enter')sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">📤</button>
                 </div>
                 <div class="quick-suggestions">
                     <span class="suggestion-chip" onclick="quickAsk('查看今日任务')">查看今日任务</span>
@@ -533,7 +554,7 @@
             <div class="header-content">
                 <h1>任务管理</h1>
                 <div class="header-icons">
-                    <i class="mdi mdi-filter-variant"></i>
+                    <span>🔍</span>
                 </div>
             </div>
         </div>
@@ -564,7 +585,7 @@
             <div class="header-content">
                 <h1>项目列表</h1>
                 <div class="header-icons">
-                    <i class="mdi mdi-map-marker"></i>
+                    <span>📍</span>
                 </div>
             </div>
         </div>
@@ -578,13 +599,13 @@
             <div class="header-content">
                 <h1>AI植物识别</h1>
                 <div class="header-icons">
-                    <i class="mdi mdi-close" onclick="switchPage('home-page')"></i>
+                    <span onclick="switchPage('home-page')">✖️</span>
                 </div>
             </div>
         </div>
 
-        <div class="upload-area" onclick="triggerUpload()">
-            <i class="mdi mdi-camera-plus-outline"></i>
+        <div class="upload-area" onclick="document.getElementById('file-input').click()">
+            <span class="icon">📷</span>
             <p>点击拍摄或上传植物照片</p>
             <p style="font-size: 12px; color: var(--text-hint); margin-top: 8px;">支持识别植物种类、健康状态、病虫害检测</p>
             <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
@@ -592,9 +613,7 @@
 
         <div class="analysis-result" id="analysis-result" style="display: none;">
             <div class="result-header">
-                <div class="result-icon healthy" id="result-icon">
-                    <i class="mdi mdi-leaf"></i>
-                </div>
+                <div class="result-icon healthy" id="result-icon">🍃</div>
                 <div>
                     <div class="result-title" id="plant-name">银杏</div>
                     <div class="result-subtitle" id="plant-status">健康状态：良好</div>
@@ -604,7 +623,7 @@
             <div class="result-section">
                 <div class="result-section-title">AI分析结果</div>
                 <div class="result-item">
-                    <i class="mdi mdi-check-circle"></i>
+                    <span>✅</span>
                     <span id="analysis-text">植物生长状态良好，无病虫害迹象</span>
                 </div>
             </div>
@@ -612,7 +631,7 @@
             <div class="result-section" id="disease-section" style="display: none;">
                 <div class="result-section-title">检测到问题</div>
                 <div class="result-item">
-                    <i class="mdi mdi-alert-circle" style="color: var(--warning-color);"></i>
+                    <span>⚠️</span>
                     <span id="disease-text">黑斑病 - 轻微</span>
                 </div>
             </div>
@@ -620,21 +639,15 @@
             <div class="result-section">
                 <div class="result-section-title">养护建议</div>
                 <div id="suggestions-container">
-                    <div class="result-item">
-                        <i class="mdi mdi-lightbulb-outline"></i>
-                        <span>保持充足光照</span>
-                    </div>
-                    <div class="result-item">
-                        <i class="mdi mdi-lightbulb-outline"></i>
-                        <span>适量浇水，避免积水</span>
-                    </div>
+                    <div class="result-item"><span>💡</span><span>保持充足光照</span></div>
+                    <div class="result-item"><span>💡</span><span>适量浇水，避免积水</span></div>
                 </div>
             </div>
 
             <div class="result-section" id="task-section" style="display: none;">
                 <div class="result-section-title">已生成任务</div>
                 <div class="result-item">
-                    <i class="mdi mdi-clipboard-check-outline"></i>
+                    <span>📋</span>
                     <span id="generated-task">病虫害防治任务已自动创建</span>
                 </div>
             </div>
@@ -651,7 +664,7 @@
 
         <div class="user-card" style="margin-top: 16px;">
             <div class="user-info">
-                <div class="user-avatar"><i class="mdi mdi-account"></i></div>
+                <div class="user-avatar">👤</div>
                 <div class="user-details">
                     <h2>王工人</h2>
                     <p>养护一部 · 养护工人</p>
@@ -662,81 +675,69 @@
         <div class="section" style="margin-top: 16px;">
             <div class="task-list">
                 <div class="task-item">
-                    <div class="task-icon" style="background: #e3f2fd;">
-                        <i class="mdi mdi-account-edit" style="color: #1565c0;"></i>
-                    </div>
+                    <div class="task-icon" style="background: #e3f2fd;">✏️</div>
                     <div class="task-content">
                         <div class="task-title">个人信息</div>
                         <div class="task-meta">修改头像、联系方式等</div>
                     </div>
-                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                    <span class="chevron">></span>
                 </div>
                 <div class="task-item">
-                    <div class="task-icon" style="background: #e8f5e9;">
-                        <i class="mdi mdi-history" style="color: #2e7d32;"></i>
-                    </div>
+                    <div class="task-icon" style="background: #e8f5e9;">📜</div>
                     <div class="task-content">
                         <div class="task-title">工作记录</div>
                         <div class="task-meta">查看历史工作记录</div>
                     </div>
-                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                    <span class="chevron">></span>
                 </div>
                 <div class="task-item">
-                    <div class="task-icon" style="background: #fff3e0;">
-                        <i class="mdi mdi-cog" style="color: #ef6c00;"></i>
-                    </div>
+                    <div class="task-icon" style="background: #fff3e0;">⚙️</div>
                     <div class="task-content">
                         <div class="task-title">设置</div>
                         <div class="task-meta">通知、隐私等设置</div>
                     </div>
-                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                    <span class="chevron">></span>
                 </div>
                 <div class="task-item">
-                    <div class="task-icon" style="background: #fce4ec;">
-                        <i class="mdi mdi-help-circle-outline" style="color: #c2185b;"></i>
-                    </div>
+                    <div class="task-icon" style="background: #fce4ec;">❓</div>
                     <div class="task-content">
                         <div class="task-title">帮助与反馈</div>
                         <div class="task-meta">使用帮助、问题反馈</div>
                     </div>
-                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                    <span class="chevron">></span>
                 </div>
             </div>
         </div>
 
         <div class="section" style="margin-top: 24px;">
-            <button onclick="logout()" style="width: 100%; padding: 14px; background: var(--danger-color); color: white; border: none; border-radius: 12px; font-size: 16px; cursor: pointer;">
-                退出登录
-            </button>
+            <button class="btn" onclick="if(confirm('确定要退出登录吗？'))alert('已退出登录')">退出登录</button>
         </div>
     </div>
 
     <!-- AI助手浮动按钮 -->
-    <div class="ai-assistant-btn" onclick="switchPage('ai-page')">
-        <i class="mdi mdi-robot-happy"></i>
-    </div>
+    <div class="ai-assistant-btn" onclick="switchPage('ai-page')">🤖</div>
 
     <!-- 底部导航 -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchPage('home-page')">
-            <i class="mdi mdi-home"></i>
-            <span>首页</span>
+            <span class="icon">🏠</span>
+            <span class="text">首页</span>
         </div>
         <div class="nav-item" onclick="switchPage('tasks-page')">
-            <i class="mdi mdi-clipboard-list-outline"></i>
-            <span>任务</span>
+            <span class="icon">📋</span>
+            <span class="text">任务</span>
         </div>
         <div class="nav-item" onclick="switchPage('camera-page')">
-            <i class="mdi mdi-camera"></i>
-            <span>识别</span>
+            <span class="icon">📷</span>
+            <span class="text">识别</span>
         </div>
         <div class="nav-item" onclick="switchPage('projects-page')">
-            <i class="mdi mdi-tree"></i>
-            <span>项目</span>
+            <span class="icon">🌳</span>
+            <span class="text">项目</span>
         </div>
         <div class="nav-item" onclick="switchPage('profile-page')">
-            <i class="mdi mdi-account"></i>
-            <span>我的</span>
+            <span class="icon">👤</span>
+            <span class="text">我的</span>
         </div>
     </div>
 
@@ -753,9 +754,7 @@
             }
         }
         
-        // 文件上传
-        function triggerUpload() { document.getElementById('file-input').click(); }
-        
+        // 文件上传处理
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (file) showAnalysisResult();
@@ -774,7 +773,7 @@
             
             if (isHealthy) {
                 document.getElementById('result-icon').className = 'result-icon healthy';
-                document.getElementById('result-icon').innerHTML = '<i class="mdi mdi-leaf"></i>';
+                document.getElementById('result-icon').textContent = '🍃';
                 document.getElementById('plant-status').textContent = '健康状态：良好';
                 document.getElementById('analysis-text').textContent = '植物生长状态良好，无病虫害迹象';
                 document.getElementById('disease-section').style.display = 'none';
@@ -788,7 +787,7 @@
                 const disease = diseases[Math.floor(Math.random() * diseases.length)];
                 
                 document.getElementById('result-icon').className = 'result-icon warning';
-                document.getElementById('result-icon').innerHTML = '<i class="mdi mdi-alert"></i>';
+                document.getElementById('result-icon').textContent = '⚠️';
                 document.getElementById('plant-status').textContent = '健康状态：异常';
                 document.getElementById('analysis-text').textContent = '检测到植物存在健康问题';
                 document.getElementById('disease-section').style.display = 'block';
@@ -814,20 +813,17 @@
                     '病虫害预警': '⚠️ 病虫害预警\n\n共发现 2 个问题：\n\n🟡 警告问题：\n• 月季 - 黑斑病\n  位置：杜仲公园南区\n  建议：清除病叶，喷洒杀菌剂'
                 };
                 
-                let response = responses[message];
-                if (!response) {
-                    response = '我理解您的问题。让我为您查询相关信息...\n\n您可以尝试问我：\n• 查看今日任务\n• 项目进度概览\n• 病虫害预警\n• 创建养护任务';
-                }
+                let response = responses[message] || '我理解您的问题。让我为您查询相关信息...\n\n您可以尝试问我：\n• 查看今日任务\n• 项目进度概览\n• 病虫害预警\n• 创建养护任务';
                 addMessage(response, 'ai');
             }, 500);
         }
         
         function addMessage(text, type) {
             const container = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message ' + type;
-            messageDiv.innerHTML = '<div class="message-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
-            container.appendChild(messageDiv);
+            const div = document.createElement('div');
+            div.className = 'message ' + type;
+            div.innerHTML = '<div class="message-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
+            container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
         
@@ -836,44 +832,29 @@
             sendMessage();
         }
         
-        function handleKeyPress(event) { if (event.key === 'Enter') sendMessage(); }
-        
         function clearChat() {
             document.getElementById('chat-messages').innerHTML = '<div class="message ai"><div class="message-bubble">您好！我是仲境智能助手，随时为您服务。<br><br>我可以帮您：<br>• 查看项目进度和任务状态<br>• 处理病虫害预警<br>• 分配和调度工作任务<br>• 生成工作报告<br><br>请问有什么可以帮您的？</div></div>';
         }
         
-        function showNotifications() { alert('通知功能开发中...'); }
-        function showUploadLog() { alert('工作日志上传功能开发中...'); }
-        function logout() { if (confirm('确定要退出登录吗？')) alert('已退出登录'); }
-        
         // 初始化任务列表
         function initTasks() {
             const tasks = [
-                { title: '南区月季病虫害防治', type: 'pesticide', zone: '杜仲公园南区', status: 'assigned' },
-                { title: '东区银杏修剪', type: 'prune', zone: '杜仲公园东区', status: 'pending' },
-                { title: '西区浇水', type: 'water', zone: '杜仲公园西区', status: 'pending' },
-                { title: '北区草坪清扫落叶', type: 'sweep', zone: '杜仲公园北区', status: 'pending' },
-                { title: '入口广场施肥', type: 'fertilize', zone: '万达广场', status: 'in_progress' }
+                { title: '南区月季病虫害防治', icon: '🧪', zone: '杜仲公园南区', status: 'assigned' },
+                { title: '东区银杏修剪', icon: '✂️', zone: '杜仲公园东区', status: 'pending' },
+                { title: '西区浇水', icon: '💧', zone: '杜仲公园西区', status: 'pending' },
+                { title: '北区草坪清扫落叶', icon: '🍂', zone: '杜仲公园北区', status: 'pending' },
+                { title: '入口广场施肥', icon: '🌱', zone: '万达广场', status: 'in_progress' }
             ];
-            
-            const typeIcons = {
-                'prune': { icon: 'mdi-scissors-cutting', color: '#1565c0', bg: '#e3f2fd' },
-                'water': { icon: 'mdi-water', color: '#0097a7', bg: '#e0f7fa' },
-                'pesticide': { icon: 'mdi-bottle-tonic', color: '#c2185b', bg: '#fce4ec' },
-                'sweep': { icon: 'mdi-leaf', color: '#ef6c00', bg: '#fff3e0' },
-                'fertilize': { icon: 'mdi-seed', color: '#2e7d32', bg: '#e8f5e9' }
-            };
             
             const statusClass = {'pending': 'status-pending', 'assigned': 'status-assigned', 'in_progress': 'status-in_progress'};
             const statusText = {'pending': '待处理', 'assigned': '已分配', 'in_progress': '进行中'};
             
-            const taskHTML = tasks.map(task => {
-                const typeInfo = typeIcons[task.type];
-                return '<div class="task-item"><div class="task-icon" style="background: ' + typeInfo.bg + ';"><i class="mdi ' + typeInfo.icon + '" style="color: ' + typeInfo.color + ';"></i></div><div class="task-content"><div class="task-title">' + task.title + '</div><div class="task-meta">' + task.zone + '</div></div><span class="task-status ' + statusClass[task.status] + '">' + statusText[task.status] + '</span></div>';
-            }).join('');
+            const html = tasks.map(t => 
+                '<div class="task-item"><div class="task-icon">' + t.icon + '</div><div class="task-content"><div class="task-title">' + t.title + '</div><div class="task-meta">' + t.zone + '</div></div><span class="task-status ' + statusClass[t.status] + '">' + statusText[t.status] + '</span></div>'
+            ).join('');
             
-            document.getElementById('today-tasks').innerHTML = taskHTML;
-            document.getElementById('all-tasks').innerHTML = taskHTML;
+            document.getElementById('today-tasks').innerHTML = html;
+            document.getElementById('all-tasks').innerHTML = html;
         }
         
         // 初始化项目列表
@@ -884,8 +865,8 @@
                 { name: '碧桂园别墅区园林养护', type: '住宅', progress: 45, tasks: '2/10', plants: 45 }
             ];
             
-            document.getElementById('projects-container').innerHTML = projects.map(project => 
-                '<div class="project-card"><div class="project-header"><div class="project-name">' + project.name + '</div><span class="project-type">' + project.type + '</span></div><div class="project-stats"><div class="project-stat-item"><div class="project-stat-value">' + project.plants + '</div><div class="project-stat-label">植物数量</div></div><div class="project-stat-item"><div class="project-stat-value">' + project.tasks + '</div><div class="project-stat-label">任务</div></div><div class="project-stat-item"><div class="project-stat-value">' + project.progress + '%</div><div class="project-stat-label">完成度</div></div></div><div class="progress-bar"><div class="progress-fill" style="width: ' + project.progress + '%;"></div></div></div>'
+            document.getElementById('projects-container').innerHTML = projects.map(p => 
+                '<div class="project-card"><div class="project-header"><div class="project-name">' + p.name + '</div><span class="project-type">' + p.type + '</span></div><div class="project-stats"><div class="project-stat-item"><div class="project-stat-value">' + p.plants + '</div><div class="project-stat-label">植物数量</div></div><div class="project-stat-item"><div class="project-stat-value">' + p.tasks + '</div><div class="project-stat-label">任务</div></div><div class="project-stat-item"><div class="project-stat-value">' + p.progress + '%</div><div class="project-stat-label">完成度</div></div></div><div class="progress-bar"><div class="progress-fill" style="width: ' + p.progress + '%;"></div></div></div>'
             ).join('');
         }
         
