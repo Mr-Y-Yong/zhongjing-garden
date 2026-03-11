@@ -1,0 +1,55 @@
+{
+  "name": "仲境园林养护",
+  "short_name": "仲境园林",
+  "description": "仲境·高端园林养护管理系统 - 智能园林养护解决方案",
+  "version": "1.0.0",
+  "package": "com.zhongjing.garden",
+  "author": "天泰园林绿化",
+  "website": "https://zhongjing.garden",
+  "email": "support@zhongjing.garden",
+  
+  "android": {
+    "package": "com.zhongjing.garden",
+    "versionCode": 1,
+    "versionName": "1.0.0",
+    "minSdkVersion": 21,
+    "targetSdkVersion": 33,
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.CAMERA",
+      "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.WRITE_EXTERNAL_STORAGE",
+      "android.permission.ACCESS_FINE_LOCATION",
+      "android.permission.ACCESS_COARSE_LOCATION"
+    ]
+  },
+  
+  "ios": {
+    "bundleIdentifier": "com.zhongjing.garden",
+    "version": "1.0.0",
+    "minIOSVersion": "12.0"
+  },
+  
+  "build": {
+    "appId": "com.zhongjing.garden",
+    "appName": "仲境园林养护",
+    "webUrl": "https://your-server.com:8080",
+    "iconPath": "icons/icon-512.png",
+    "splashPath": "icons/splash.png"
+  },
+  
+  "features": [
+    "AI植物识别",
+    "病虫害预警",
+    "智能任务派发",
+    "项目管理",
+    "工作日志",
+    "数据报表"
+  ],
+  
+  "category": "Business",
+  "keywords": ["园林", "养护", "绿化", "AI", "智能管理", "病虫害"],
+  "language": "zh-CN",
+  "orientation": "portrait"
+}

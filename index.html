@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2e7d32">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="仲境园林">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="仲境园林养护">
+    <title>仲境·高端园林养护</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #1b5e20;
+            --secondary-color: #ff9800;
+            --background-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-hint: #999999;
+            --border-color: #e0e0e0;
+            --danger-color: #f44336;
+            --warning-color: #ff9800;
+            --success-color: #4caf50;
+            --info-color: #2196f3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 20px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 { font-size: 20px; font-weight: 600; }
+        .header-icons { display: flex; gap: 16px; }
+        .header-icons i { font-size: 24px; cursor: pointer; }
+
+        .user-card {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            margin: 16px;
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        .user-info { display: flex; align-items: center; gap: 16px; }
+        .user-avatar {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+        .user-details h2 { font-size: 18px; margin-bottom: 4px; }
+        .user-details p { font-size: 14px; opacity: 0.9; }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 0 16px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-size: 28px; font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+        .section { padding: 0 16px; margin-bottom: 16px; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+        .section-more { font-size: 14px; color: var(--text-hint); }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 16px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin: 0 16px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .action-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 8px;
+            cursor: pointer; padding: 8px 0;
+        }
+
+        .action-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+
+        .action-label { font-size: 12px; color: var(--text-secondary); }
+
+        .task-list {
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin: 0 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .task-item {
+            display: flex; align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .task-item:last-child { border-bottom: none; }
+
+        .task-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-right: 12px;
+        }
+
+        .task-content { flex: 1; }
+        .task-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+        .task-meta { font-size: 12px; color: var(--text-hint); }
+
+        .task-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .status-pending { background: #fff3e0; color: #e65100; }
+        .status-assigned { background: #e3f2fd; color: #1565c0; }
+        .status-in_progress { background: #e8f5e9; color: #2e7d32; }
+
+        .alert-card {
+            background: linear-gradient(135deg, #ffebee, #fff);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .alert-title { font-size: 15px; font-weight: 600; color: var(--danger-color); }
+        .alert-content { font-size: 13px; color: var(--text-secondary); }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 4px;
+            padding: 4px 16px;
+            cursor: pointer;
+            color: var(--text-hint);
+        }
+
+        .nav-item.active { color: var(--primary-color); }
+        .nav-item i { font-size: 24px; }
+        .nav-item span { font-size: 10px; }
+
+        .ai-assistant-btn {
+            position: fixed; bottom: 80px; right: 20px;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+            cursor: pointer; z-index: 999;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 125, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .chat-container {
+            height: calc(100vh - 140px);
+            display: flex; flex-direction: column;
+            background: var(--background-color);
+        }
+
+        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; }
+
+        .message { margin-bottom: 16px; display: flex; }
+        .message.user { justify-content: flex-end; }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-bubble {
+            background: var(--card-bg);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-bubble {
+            background: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-container {
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .chat-input-box { display: flex; gap: 12px; align-items: center; }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .send-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+        }
+
+        .quick-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+        .suggestion-chip {
+            padding: 8px 16px;
+            background: #e8f5e9;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .project-name { font-size: 16px; font-weight: 600; }
+        .project-type {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #e8f5e9;
+            color: var(--primary-color);
+        }
+
+        .project-stats { display: flex; gap: 24px; }
+        .project-stat-item { text-align: center; }
+        .project-stat-value { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+        .project-stat-label { font-size: 12px; color: var(--text-hint); }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        .upload-area {
+            background: var(--card-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 16px;
+            cursor: pointer;
+        }
+
+        .upload-area i { font-size: 48px; color: var(--text-hint); margin-bottom: 12px; }
+        .upload-area p { color: var(--text-secondary); font-size: 14px; }
+
+        .analysis-result {
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+        .result-icon {
+            width: 56px; height: 56px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+        }
+
+        .result-icon.healthy { background: #e8f5e9; color: var(--success-color); }
+        .result-icon.warning { background: #fff3e0; color: var(--warning-color); }
+        .result-icon.danger { background: #ffebee; color: var(--danger-color); }
+
+        .result-title { font-size: 18px; font-weight: 600; }
+        .result-subtitle { font-size: 14px; color: var(--text-secondary); }
+
+        .result-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .result-section-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+
+        .result-item {
+            display: flex; align-items: flex-start; gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .result-item i { color: var(--primary-color); margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <!-- 首页 -->
+    <div id="home-page" class="page active">
+        <div class="header">
+            <div class="header-content">
+                <h1>仲境·园林养护</h1>
+                <div class="header-icons">
+                    <i class="mdi mdi-bell-outline" onclick="showNotifications()"></i>
+                    <i class="mdi mdi-account-outline" onclick="switchPage('profile-page')"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-card">
+            <div class="user-info">
+                <div class="user-avatar"><i class="mdi mdi-account"></i></div>
+                <div class="user-details">
+                    <h2 id="user-name">王工人</h2>
+                    <p>养护一部 · 养护工人</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">待处理</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">进行中</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">已完成</div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <div class="action-item" onclick="switchPage('camera-page')">
+                <div class="action-icon" style="background: #e3f2fd;">
+                    <i class="mdi mdi-camera" style="color: #1565c0;"></i>
+                </div>
+                <span class="action-label">拍照识别</span>
+            </div>
+            <div class="action-item" onclick="switchPage('tasks-page')">
+                <div class="action-icon" style="background: #e8f5e9;">
+                    <i class="mdi mdi-clipboard-list-outline" style="color: #2e7d32;"></i>
+                </div>
+                <span class="action-label">任务列表</span>
+            </div>
+            <div class="action-item" onclick="showUploadLog()">
+                <div class="action-icon" style="background: #fff3e0;">
+                    <i class="mdi mdi-file-document-edit-outline" style="color: #ef6c00;"></i>
+                </div>
+                <span class="action-label">工作日志</span>
+            </div>
+            <div class="action-item" onclick="switchPage('projects-page')">
+                <div class="action-icon" style="background: #fce4ec;">
+                    <i class="mdi mdi-tree" style="color: #c2185b;"></i>
+                </div>
+                <span class="action-label">项目查看</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">病虫害预警</span>
+                <span class="section-more">查看全部 ></span>
+            </div>
+            <div id="alerts-container">
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <i class="mdi mdi-alert-circle" style="color: var(--danger-color);"></i>
+                        <span class="alert-title">月季黑斑病</span>
+                    </div>
+                    <div class="alert-content">
+                        杜仲公园南区发现月季黑斑病，严重程度：警告，建议立即处理。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="section-title">今日任务</span>
+                <span class="section-more" onclick="switchPage('tasks-page')">查看全部 ></span>
+            </div>
+            <div class="task-list" id="today-tasks"></div>
+        </div>
+    </div>
+
+    <!-- AI助手页面 -->
+    <div id="ai-page" class="page">
+        <div class="header">
+            <div class="header-content">
+                <h1>AI智能助手</h1>
+                <div class="header-icons">
+                    <i class="mdi mdi-delete-outline" onclick="clearChat()"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="message ai">
+                    <div class="message-bubble">
+                        您好！我是仲境智能助手，随时为您服务。<br><br>
+                        我可以帮您：<br>
+                        • 查看项目进度和任务状态<br>
+                        • 处理病虫害预警<br>
+                        • 分配和调度工作任务<br>
+                        • 生成工作报告<br><br>
+                        请问有什么可以帮您的？
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-box">
+                    <input type="text" class="chat-input" id="chat-input" placeholder="输入您的问题..." onkeypress="handleKeyPress(event)">
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="mdi mdi-send"></i>
+                    </button>
+                </div>
+                <div class="quick-suggestions">
+                    <span class="suggestion-chip" onclick="quickAsk('查看今日任务')">查看今日任务</span>
+                    <span class="suggestion-chip" onclick="quickAsk('项目进度概览')">项目进度概览</span>
+                    <span class="suggestion-chip" onclick="quickAsk('病虫害预警')">病虫害预警</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务页面 -->
+    <div id="tasks-page" class="page">
+        <div class="header">
+            <div class="header-content">
+                <h1>任务管理</h1>
+                <div class="header-icons">
+                    <i class="mdi mdi-filter-variant"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container" style="margin-top: 16px;">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">待处理</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">进行中</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">已完成</div>
+            </div>
+        </div>
+
+        <div class="section" style="padding-top: 0;">
+            <div class="task-list" id="all-tasks"></div>
+        </div>
+    </div>
+
+    <!-- 项目页面 -->
+    <div id="projects-page" class="page">
+        <div class="header">
+            <div class="header-content">
+                <h1>项目列表</h1>
+                <div class="header-icons">
+                    <i class="mdi mdi-map-marker"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="margin-top: 16px;" id="projects-container"></div>
+    </div>
+
+    <!-- 拍照识别页面 -->
+    <div id="camera-page" class="page">
+        <div class="header">
+            <div class="header-content">
+                <h1>AI植物识别</h1>
+                <div class="header-icons">
+                    <i class="mdi mdi-close" onclick="switchPage('home-page')"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-area" onclick="triggerUpload()">
+            <i class="mdi mdi-camera-plus-outline"></i>
+            <p>点击拍摄或上传植物照片</p>
+            <p style="font-size: 12px; color: var(--text-hint); margin-top: 8px;">支持识别植物种类、健康状态、病虫害检测</p>
+            <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
+        </div>
+
+        <div class="analysis-result" id="analysis-result" style="display: none;">
+            <div class="result-header">
+                <div class="result-icon healthy" id="result-icon">
+                    <i class="mdi mdi-leaf"></i>
+                </div>
+                <div>
+                    <div class="result-title" id="plant-name">银杏</div>
+                    <div class="result-subtitle" id="plant-status">健康状态：良好</div>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="result-section-title">AI分析结果</div>
+                <div class="result-item">
+                    <i class="mdi mdi-check-circle"></i>
+                    <span id="analysis-text">植物生长状态良好，无病虫害迹象</span>
+                </div>
+            </div>
+
+            <div class="result-section" id="disease-section" style="display: none;">
+                <div class="result-section-title">检测到问题</div>
+                <div class="result-item">
+                    <i class="mdi mdi-alert-circle" style="color: var(--warning-color);"></i>
+                    <span id="disease-text">黑斑病 - 轻微</span>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <div class="result-section-title">养护建议</div>
+                <div id="suggestions-container">
+                    <div class="result-item">
+                        <i class="mdi mdi-lightbulb-outline"></i>
+                        <span>保持充足光照</span>
+                    </div>
+                    <div class="result-item">
+                        <i class="mdi mdi-lightbulb-outline"></i>
+                        <span>适量浇水，避免积水</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-section" id="task-section" style="display: none;">
+                <div class="result-section-title">已生成任务</div>
+                <div class="result-item">
+                    <i class="mdi mdi-clipboard-check-outline"></i>
+                    <span id="generated-task">病虫害防治任务已自动创建</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我的页面 -->
+    <div id="profile-page" class="page">
+        <div class="header">
+            <div class="header-content">
+                <h1>个人中心</h1>
+            </div>
+        </div>
+
+        <div class="user-card" style="margin-top: 16px;">
+            <div class="user-info">
+                <div class="user-avatar"><i class="mdi mdi-account"></i></div>
+                <div class="user-details">
+                    <h2>王工人</h2>
+                    <p>养护一部 · 养护工人</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="margin-top: 16px;">
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-icon" style="background: #e3f2fd;">
+                        <i class="mdi mdi-account-edit" style="color: #1565c0;"></i>
+                    </div>
+                    <div class="task-content">
+                        <div class="task-title">个人信息</div>
+                        <div class="task-meta">修改头像、联系方式等</div>
+                    </div>
+                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                </div>
+                <div class="task-item">
+                    <div class="task-icon" style="background: #e8f5e9;">
+                        <i class="mdi mdi-history" style="color: #2e7d32;"></i>
+                    </div>
+                    <div class="task-content">
+                        <div class="task-title">工作记录</div>
+                        <div class="task-meta">查看历史工作记录</div>
+                    </div>
+                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                </div>
+                <div class="task-item">
+                    <div class="task-icon" style="background: #fff3e0;">
+                        <i class="mdi mdi-cog" style="color: #ef6c00;"></i>
+                    </div>
+                    <div class="task-content">
+                        <div class="task-title">设置</div>
+                        <div class="task-meta">通知、隐私等设置</div>
+                    </div>
+                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                </div>
+                <div class="task-item">
+                    <div class="task-icon" style="background: #fce4ec;">
+                        <i class="mdi mdi-help-circle-outline" style="color: #c2185b;"></i>
+                    </div>
+                    <div class="task-content">
+                        <div class="task-title">帮助与反馈</div>
+                        <div class="task-meta">使用帮助、问题反馈</div>
+                    </div>
+                    <i class="mdi mdi-chevron-right" style="color: var(--text-hint);"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="margin-top: 24px;">
+            <button onclick="logout()" style="width: 100%; padding: 14px; background: var(--danger-color); color: white; border: none; border-radius: 12px; font-size: 16px; cursor: pointer;">
+                退出登录
+            </button>
+        </div>
+    </div>
+
+    <!-- AI助手浮动按钮 -->
+    <div class="ai-assistant-btn" onclick="switchPage('ai-page')">
+        <i class="mdi mdi-robot-happy"></i>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchPage('home-page')">
+            <i class="mdi mdi-home"></i>
+            <span>首页</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('tasks-page')">
+            <i class="mdi mdi-clipboard-list-outline"></i>
+            <span>任务</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('camera-page')">
+            <i class="mdi mdi-camera"></i>
+            <span>识别</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('projects-page')">
+            <i class="mdi mdi-tree"></i>
+            <span>项目</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('profile-page')">
+            <i class="mdi mdi-account"></i>
+            <span>我的</span>
+        </div>
+    </div>
+
+    <script>
+        // 切换页面
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navMap = {'home-page': 0, 'tasks-page': 1, 'camera-page': 2, 'projects-page': 3, 'profile-page': 4};
+            if (navMap[pageId] !== undefined) {
+                document.querySelectorAll('.nav-item')[navMap[pageId]].classList.add('active');
+            }
+        }
+        
+        // 文件上传
+        function triggerUpload() { document.getElementById('file-input').click(); }
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) showAnalysisResult();
+        }
+        
+        // 显示分析结果
+        function showAnalysisResult() {
+            const resultDiv = document.getElementById('analysis-result');
+            resultDiv.style.display = 'block';
+            
+            const isHealthy = Math.random() > 0.4;
+            const plants = ['银杏', '桂花', '月季', '香樟', '紫薇', '广玉兰'];
+            const plantName = plants[Math.floor(Math.random() * plants.length)];
+            
+            document.getElementById('plant-name').textContent = plantName;
+            
+            if (isHealthy) {
+                document.getElementById('result-icon').className = 'result-icon healthy';
+                document.getElementById('result-icon').innerHTML = '<i class="mdi mdi-leaf"></i>';
+                document.getElementById('plant-status').textContent = '健康状态：良好';
+                document.getElementById('analysis-text').textContent = '植物生长状态良好，无病虫害迹象';
+                document.getElementById('disease-section').style.display = 'none';
+                document.getElementById('task-section').style.display = 'none';
+            } else {
+                const diseases = [
+                    { name: '黑斑病', severity: '警告', treatment: '清除病叶，喷洒多菌灵' },
+                    { name: '蚜虫', severity: '轻微', treatment: '喷洒吡虫啉' },
+                    { name: '白粉病', severity: '警告', treatment: '喷洒三唑酮，改善通风' }
+                ];
+                const disease = diseases[Math.floor(Math.random() * diseases.length)];
+                
+                document.getElementById('result-icon').className = 'result-icon warning';
+                document.getElementById('result-icon').innerHTML = '<i class="mdi mdi-alert"></i>';
+                document.getElementById('plant-status').textContent = '健康状态：异常';
+                document.getElementById('analysis-text').textContent = '检测到植物存在健康问题';
+                document.getElementById('disease-section').style.display = 'block';
+                document.getElementById('disease-text').textContent = disease.name + ' - ' + disease.severity;
+                document.getElementById('task-section').style.display = 'block';
+                document.getElementById('generated-task').textContent = '已创建' + disease.treatment + '任务';
+            }
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            setTimeout(() => {
+                const responses = {
+                    '查看今日任务': '📋 任务状态概览\n\n待处理任务：5 个\n进行中任务：3 个\n紧急任务：1 个\n\n🔴 紧急任务：\n• 南区月季病虫害防治 - 杜仲公园',
+                    '项目进度概览': '📊 项目进度概览\n\n📁 杜仲公园绿化养护项目\n   进度：80%\n   待处理任务：5/20\n\n📁 万达广场商业绿化项目\n   进度：60%\n   待处理任务：3/15',
+                    '病虫害预警': '⚠️ 病虫害预警\n\n共发现 2 个问题：\n\n🟡 警告问题：\n• 月季 - 黑斑病\n  位置：杜仲公园南区\n  建议：清除病叶，喷洒杀菌剂'
+                };
+                
+                let response = responses[message];
+                if (!response) {
+                    response = '我理解您的问题。让我为您查询相关信息...\n\n您可以尝试问我：\n• 查看今日任务\n• 项目进度概览\n• 病虫害预警\n• 创建养护任务';
+                }
+                addMessage(response, 'ai');
+            }, 500);
+        }
+        
+        function addMessage(text, type) {
+            const container = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + type;
+            messageDiv.innerHTML = '<div class="message-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function quickAsk(question) {
+            document.getElementById('chat-input').value = question;
+            sendMessage();
+        }
+        
+        function handleKeyPress(event) { if (event.key === 'Enter') sendMessage(); }
+        
+        function clearChat() {
+            document.getElementById('chat-messages').innerHTML = '<div class="message ai"><div class="message-bubble">您好！我是仲境智能助手，随时为您服务。<br><br>我可以帮您：<br>• 查看项目进度和任务状态<br>• 处理病虫害预警<br>• 分配和调度工作任务<br>• 生成工作报告<br><br>请问有什么可以帮您的？</div></div>';
+        }
+        
+        function showNotifications() { alert('通知功能开发中...'); }
+        function showUploadLog() { alert('工作日志上传功能开发中...'); }
+        function logout() { if (confirm('确定要退出登录吗？')) alert('已退出登录'); }
+        
+        // 初始化任务列表
+        function initTasks() {
+            const tasks = [
+                { title: '南区月季病虫害防治', type: 'pesticide', zone: '杜仲公园南区', status: 'assigned' },
+                { title: '东区银杏修剪', type: 'prune', zone: '杜仲公园东区', status: 'pending' },
+                { title: '西区浇水', type: 'water', zone: '杜仲公园西区', status: 'pending' },
+                { title: '北区草坪清扫落叶', type: 'sweep', zone: '杜仲公园北区', status: 'pending' },
+                { title: '入口广场施肥', type: 'fertilize', zone: '万达广场', status: 'in_progress' }
+            ];
+            
+            const typeIcons = {
+                'prune': { icon: 'mdi-scissors-cutting', color: '#1565c0', bg: '#e3f2fd' },
+                'water': { icon: 'mdi-water', color: '#0097a7', bg: '#e0f7fa' },
+                'pesticide': { icon: 'mdi-bottle-tonic', color: '#c2185b', bg: '#fce4ec' },
+                'sweep': { icon: 'mdi-leaf', color: '#ef6c00', bg: '#fff3e0' },
+                'fertilize': { icon: 'mdi-seed', color: '#2e7d32', bg: '#e8f5e9' }
+            };
+            
+            const statusClass = {'pending': 'status-pending', 'assigned': 'status-assigned', 'in_progress': 'status-in_progress'};
+            const statusText = {'pending': '待处理', 'assigned': '已分配', 'in_progress': '进行中'};
+            
+            const taskHTML = tasks.map(task => {
+                const typeInfo = typeIcons[task.type];
+                return '<div class="task-item"><div class="task-icon" style="background: ' + typeInfo.bg + ';"><i class="mdi ' + typeInfo.icon + '" style="color: ' + typeInfo.color + ';"></i></div><div class="task-content"><div class="task-title">' + task.title + '</div><div class="task-meta">' + task.zone + '</div></div><span class="task-status ' + statusClass[task.status] + '">' + statusText[task.status] + '</span></div>';
+            }).join('');
+            
+            document.getElementById('today-tasks').innerHTML = taskHTML;
+            document.getElementById('all-tasks').innerHTML = taskHTML;
+        }
+        
+        // 初始化项目列表
+        function initProjects() {
+            const projects = [
+                { name: '杜仲公园绿化养护项目', type: '公园', progress: 80, tasks: '5/20', plants: 156 },
+                { name: '万达广场商业绿化项目', type: '商业', progress: 60, tasks: '3/15', plants: 89 },
+                { name: '碧桂园别墅区园林养护', type: '住宅', progress: 45, tasks: '2/10', plants: 45 }
+            ];
+            
+            document.getElementById('projects-container').innerHTML = projects.map(project => 
+                '<div class="project-card"><div class="project-header"><div class="project-name">' + project.name + '</div><span class="project-type">' + project.type + '</span></div><div class="project-stats"><div class="project-stat-item"><div class="project-stat-value">' + project.plants + '</div><div class="project-stat-label">植物数量</div></div><div class="project-stat-item"><div class="project-stat-value">' + project.tasks + '</div><div class="project-stat-label">任务</div></div><div class="project-stat-item"><div class="project-stat-value">' + project.progress + '%</div><div class="project-stat-label">完成度</div></div></div><div class="progress-bar"><div class="progress-fill" style="width: ' + project.progress + '%;"></div></div></div>'
+            ).join('');
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initTasks();
+            initProjects();
+        });
+    </script>
+</body>
+</html>
